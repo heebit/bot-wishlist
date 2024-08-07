@@ -1,17 +1,17 @@
 const { Telegraf } = require('telegraf')
 const fs = require('fs');
 const { message } = require('telegraf/filters')
-require ('dotenv').config();
+require('dotenv').config();
 
-const {BOT_TOKEN} = process.env;
+const { BOT_TOKEN } = process.env;
 
 const bot = new Telegraf(BOT_TOKEN);
 
-const ADMIN_ID =  Number(process.env.ADMIN_ID);
+const ADMIN_ID = Number(process.env.ADMIN_ID);
 
 const wishlist = JSON.parse(fs.readFileSync('wishlist.json', 'utf-8'));
 
-bot.start((ctx) => ctx.reply('В этот бот можно добавить свой вишлист'))
+bot.start((ctx) => ctx.reply('В этот бот можно добавить свой вишлист. \n Спикок команд \n /wishlist - список подарков \n /add - добавить подарок (только для админа) \n /delete - удалить подарок (только для админа) \n /buy - выбрать подарок '))
 
 bot.command('wishlist', (ctx) => {
     const gifts = wishlist.map((gift, index) => {
@@ -24,7 +24,7 @@ bot.command('wishlist', (ctx) => {
     ctx.reply(`Список подарков: \n${gifts.join('\n')}`)
 })
 bot.command('add', (ctx) => {
-    if ( ctx.from.id !== ADMIN_ID){
+    if (ctx.from.id !== ADMIN_ID) {
         ctx.reply("Вы не можете добавлять подарок");
         return;
     }
@@ -35,7 +35,7 @@ bot.command('add', (ctx) => {
     ctx.reply(`Подарок ${giftTitle} был успешно добавлен`)
 })
 bot.command('delete', (ctx) => {
-    if ( ctx.from.id !== ADMIN_ID){
+    if (ctx.from.id !== ADMIN_ID) {
         ctx.reply("Вы не можете удалить подарок");
         return;
     }
